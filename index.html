@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tic-Tac-Toe</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Tic-Tac-Toe</h1>
+
+    <div class="board">
+    {% for row in board %}
+        <div class="row">
+            {% for cell in row %}
+                <div class="cell" onclick="makeMove({ loop,index0 } , { loop,index })">{{ cell }}</div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>
+
+{% if winner %}
+    <h2>{{ winner }} wins!</h2>
+{% endif %}
+
+
+    <script>
+        function makeMove(row, col) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/" + row + "/" + col, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    document.documentElement.innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</body>
+</html>
